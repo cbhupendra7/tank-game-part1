@@ -28,7 +28,6 @@ public class Shell extends Entity {
         }
     }
 
-
     private static String getUniqueId() {
         return SHELL_ID_PREFIX + uniqueId++;
     }

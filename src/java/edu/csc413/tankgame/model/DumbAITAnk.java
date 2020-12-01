@@ -12,10 +12,5 @@ public class DumbAITAnk extends Tank {
         turnRight();
 
     }
-
-
-
-
-
 }
 

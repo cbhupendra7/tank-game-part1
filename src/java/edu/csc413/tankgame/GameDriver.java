@@ -4,8 +4,7 @@ import edu.csc413.tankgame.model.*;
 import edu.csc413.tankgame.view.MainView;
 import edu.csc413.tankgame.view.RunGameView;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+
 
 /**
  * GameDriver is the primary controller class for the tank game. The game is launched from GameDriver.main, and
@@ -37,26 +36,16 @@ public class GameDriver {
     public void start() {
         // TODO: Implement.
         // This should set the MainView's screen to the start menu screen.
-
-        //mainView.setScreen(MainView.Screen.START_MENU_SCREEN);
-
-        //if (startPressed) {
-        //mainView.setScreen(MainView.Screen.START_MENU_SCREEN);
-        mainView.setScreen(MainView.Screen.RUN_GAME_SCREEN);
-
-
-        //  }
-
-
-        // if(actionPerformed());
-        //mainView.setScreen(MainView.Screen.RUN_GAME_SCREEN);
-        // mainView.setScreen(MainView.Screen.END_MENU_SCREEN);
-        // PrintListener bhu = new PrintListener();
         // u should have figured out how to transit the screen when the button is pressed
 
 
-        runGame();
+        mainView.setScreen(MainView.Screen.START_MENU_SCREEN);
 
+        if (startPressed=true) {
+
+            mainView.setScreen(MainView.Screen.RUN_GAME_SCREEN);
+            runGame();
+        }
     }
 
     private void runGame() {
