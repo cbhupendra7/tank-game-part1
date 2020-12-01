@@ -38,26 +38,26 @@ public class GameDriver {
         // TODO: Implement.
         // This should set the MainView's screen to the start menu screen.
 
-        mainView.setScreen(MainView.Screen.START_MENU_SCREEN);
+        //mainView.setScreen(MainView.Screen.START_MENU_SCREEN);
 
-            if (startPressed) {
-                //mainView.setScreen(MainView.Screen.START_MENU_SCREEN);
-                mainView.setScreen(MainView.Screen.RUN_GAME_SCREEN);
-
-
-            }
+        //if (startPressed) {
+        //mainView.setScreen(MainView.Screen.START_MENU_SCREEN);
+        mainView.setScreen(MainView.Screen.RUN_GAME_SCREEN);
 
 
-            // if(actionPerformed());
-            //mainView.setScreen(MainView.Screen.RUN_GAME_SCREEN);
-            // mainView.setScreen(MainView.Screen.END_MENU_SCREEN);
-            // PrintListener bhu = new PrintListener();
-            // u should have figured out how to transit the screen when the button is pressed
+        //  }
 
 
-            runGame();
+        // if(actionPerformed());
+        //mainView.setScreen(MainView.Screen.RUN_GAME_SCREEN);
+        // mainView.setScreen(MainView.Screen.END_MENU_SCREEN);
+        // PrintListener bhu = new PrintListener();
+        // u should have figured out how to transit the screen when the button is pressed
 
-        }
+
+        runGame();
+
+    }
 
     private void runGame() {
         Tank playerTank =

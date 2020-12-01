@@ -98,9 +98,6 @@ public class MainView {
     }
 
 
-
-
-
     /** Ends the program. */
     public void closeGame() {
         mainJFrame.dispatchEvent(new WindowEvent(mainJFrame, WindowEvent.WINDOW_CLOSING));
