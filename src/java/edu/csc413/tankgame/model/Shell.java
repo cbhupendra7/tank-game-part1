@@ -23,12 +23,50 @@ public class Shell extends Entity {
 
     @Override
     public void move(GameState gamestate){
-        if(GameState.shootPressed){
-            moveForward();
+        moveForward();
+    }
+
+    @Override
+    public void boundChecking(GameState gameState) {
+        if (getX() < GameState.SHELL_X_LOWER_BOUND) {
+            x = GameState.SHELL_X_LOWER_BOUND;
+        }
+        if (getX() > GameState.SHELL_X_UPPER_BOUND) {
+            x = GameState.SHELL_X_UPPER_BOUND;
+        }
+        if (getY() < GameState.SHELL_Y_LOWER_BOUND) {
+            y = GameState.SHELL_Y_LOWER_BOUND;
+        }
+        if (getY() > GameState.SHELL_Y_UPPER_BOUND) {
+            y = GameState.SHELL_Y_UPPER_BOUND;
+
         }
     }
 
-    private static String getUniqueId() {
-        return SHELL_ID_PREFIX + uniqueId++;
+    @Override
+    public void setX(double v) {
+
     }
-}
+
+    @Override
+    public void setY(double v) {
+
+    }
+
+    private static String getUniqueId () {
+            return SHELL_ID_PREFIX + uniqueId++;
+        }
+
+
+    @Override
+    public double getXBound() {
+        return getX()+24.0;
+    }
+
+    public double getYBound() {
+        return getY() + 24.0;
+
+
+    }
+
+    }

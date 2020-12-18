@@ -15,21 +15,20 @@ public abstract class Tank extends Entity {
         super(id,x, y, angle);
     }
 
-
     // The following methods will be useful for determining where a shell should be spawned when it
     // is created by this tank. It needs a slight offset so it appears from the front of the tank,
     // even if the tank is rotated. The shell should have the same angle as the tank.
 
-    private double getShellX() {
-        return getX() + 30.0 * (Math.cos(getAngle()) + 0.5);
-    }
+    private double getShellX() { return getX() + 30.0 * (Math.cos(getAngle()) + 0.5); }
 
     private double getShellY() {
         return getY() + 30.0 * (Math.sin(getAngle()) + 0.5);
     }
 
-
-
+    protected void shoot(GameState gameState){
+        Shell shell = new Shell(getShellX(),getShellY(),getAngle());
+        gameState.addShellEntity(shell);
+        }
 
     // TODO: The methods below are provided so you don't have to do the math for movement. However, note that they are
     // protected. You should not be calling these methods directly from outside the Tank class hierarchy. Instead,
@@ -56,11 +55,43 @@ public abstract class Tank extends Entity {
         angle += TURN_SPEED;
     }
 
+    public void boundChecking(GameState gameState){
+        if(getX()<GameState.TANK_X_LOWER_BOUND){
+            x = GameState.TANK_X_LOWER_BOUND;
+        }
+        if(getX()>GameState.TANK_X_UPPER_BOUND){
+            x = GameState.TANK_X_UPPER_BOUND;
+        }
+        if(getY()<GameState.TANK_Y_LOWER_BOUND){
+            y = GameState.TANK_Y_LOWER_BOUND;
+        }
+        if(getY()>GameState.TANK_Y_UPPER_BOUND){
+            y = GameState.TANK_Y_UPPER_BOUND;
+        }
+
+    }
+    @Override
+    public void setX(double v) {
+
+    }
+
+    @Override
+    public void setY(double v) {
+
+    }
+
+    @Override
+    public double getXBound() {
+        return getX()+55.0;
+    }
+
+    @Override
+    public double getYBound() {
+        return getY()+55.0;
+    }
+
 
 }
-
-
-
 
 
 

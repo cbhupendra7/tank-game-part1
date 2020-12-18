@@ -1,8 +1,6 @@
 package edu.csc413.tankgame.view;
-//import edu.csc413.tankgame.PrintListener;
 
 import edu.csc413.tankgame.GameDriver;
-import edu.csc413.tankgame.PrintListener;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -32,7 +30,9 @@ public class StartMenuView extends JPanel {
     public static final String START_BUTTON_ACTION_COMMAND = "start_ac";
     public static final String EXIT_BUTTON_ACTION_COMMAND = "exit_ac";
 
-   PrintListener printlistener = new PrintListener();
+   // GameDriver.printlistener printlisteners = printListener();
+
+
 
     private final BufferedImage menuBackground;
 
@@ -54,8 +54,8 @@ public class StartMenuView extends JPanel {
         setBackground(Color.BLACK);
         setLayout(null);
 
-        addButton(startButtonText, START_BUTTON_BOUNDS, START_BUTTON_ACTION_COMMAND, printlistener);
-        addButton("Exit", EXIT_BUTTON_BOUNDS, EXIT_BUTTON_ACTION_COMMAND, printlistener);
+        addButton(startButtonText, START_BUTTON_BOUNDS, START_BUTTON_ACTION_COMMAND, null);
+        addButton("Exit", EXIT_BUTTON_BOUNDS, EXIT_BUTTON_ACTION_COMMAND, null);
     }
 
     private void addButton(

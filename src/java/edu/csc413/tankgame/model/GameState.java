@@ -1,10 +1,12 @@
 package edu.csc413.tankgame.model;
 
-import edu.csc413.tankgame.KeyControlListener;
+import edu.csc413.tankgame.GameDriver;
 import edu.csc413.tankgame.view.RunGameView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+
 
 /**
  * GameState represents the state of the game "world." The GameState object tracks all of the moving entities like tanks
@@ -24,6 +26,7 @@ public class GameState {
 
     public static final String PLAYER_TANK_ID = "player-tank";
     public static final String AI_TANK_ID = "ai-tank";
+    public static final String AI_TANK_2_ID = "ai-tank2";
     // TODO: Feel free to add more tank IDs if you want to support multiple AI tanks! Just make sure they're unique.
 
     // TODO: Implement.
@@ -40,13 +43,31 @@ public class GameState {
     private final List<Entity> entities = new ArrayList<>();
 
     public void addEntity(Entity tank) {
-
         entities.add(tank);
     }
 
     public List<Entity> getEntities() {
+        return entities;
+    }
 
-        return entities; }
+    public void removeEntity(Entity entity) {
+        entities.remove(entity);
+    }
+
+
+    private final List<Entity> shellEntities = new ArrayList<>();
+
+    public void addShellEntity(Entity shell) {
+        shellEntities.add(shell);
+    }
+
+    public List<Entity> getShellEntities() {
+        return shellEntities;
+    }
+
+    public void removeShellEntity(Entity shell) {
+        entities.remove(shell);
+    }
 
 
     public static void setupPressed() {
@@ -57,7 +78,7 @@ public class GameState {
         downPressed = true;
     }
 
-    public static void  setleftPressed() {
+    public static void setleftPressed() {
         leftPressed = true;
     }
 
@@ -68,7 +89,8 @@ public class GameState {
     public static void setshootPressed() {
         shootPressed = true;
     }
-        public static void releaseupPressed() {
+
+    public static void releaseupPressed() {
         upPressed = false;
     }
 
@@ -76,15 +98,26 @@ public class GameState {
         downPressed = false;
     }
 
-    public static void  releaseleftPressed() {
+    public static void releaseleftPressed() {
         leftPressed = false;
     }
 
     public static void releaserightPressed() {
         rightPressed = false;
     }
+
     public static void releaseshootPressed() {
         shootPressed = false;
-
     }
+
+
+      public Entity getEntity(String playerTankId) {
+
+        for (Entity entity: getEntities()){
+            if(entity.getId().equals(playerTankId)){
+                return entity;
+            }
+        }
+        return null;
+      }
 }

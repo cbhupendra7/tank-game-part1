@@ -31,7 +31,22 @@ public abstract class Entity {
         return angle;
     }
 
+
+    public abstract double getXBound();
+
+    public abstract double getYBound();
+
+
     public abstract void move(GameState gameState);
+
+    public abstract void boundChecking(GameState gameState);
+
+
+
+
+    public abstract void setX(double v);
+
+    public abstract void setY(double v);
 }
 
 

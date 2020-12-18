@@ -90,11 +90,6 @@ public class MainView {
         mainPanelLayout.show(mainPanel, screen.getScreenName());
 
         mainJFrame.setVisible(true);
-
-
-
-
-
     }
 
 
