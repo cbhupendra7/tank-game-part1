@@ -4,6 +4,8 @@ import edu.csc413.tankgame.model.*;
 import edu.csc413.tankgame.view.MainView;
 import edu.csc413.tankgame.view.RunGameView;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 
 /**
@@ -141,24 +143,24 @@ public class GameDriver {
     }
 }
 
-//    public class startListener implements ActionListener {
-//        public static final String START_BUTTON_ACTION_COMMAND = "start_ac";
-//        public static final String EXIT_BUTTON_ACTION_COMMAND = "exit_ac";
-//
-//
-//        @Override
-//        public void actionPerformed(ActionEvent event) {
-//            String actionCommand = event.getActionCommand();
-//            if (actionCommand.equals(START_BUTTON_ACTION_COMMAND)) {
-//                mainView.setScreen(MainView.Screen.RUN_GAME_SCREEN);
-//                // MainView.Screen.RUN_GAME_SCREEN
-//
-//                System.out.println("Start button is pressed");
-//
-//
-//            } else if (actionCommand.equals(EXIT_BUTTON_ACTION_COMMAND)) {
-//                mainView.setScreen(MainView.Screen.END_MENU_SCREEN);
-//                System.out.println(" exit is pressed");
-//            }
-//
-//        }   }
+    public static class startListener implements ActionListener {
+        public static final String START_BUTTON_ACTION_COMMAND = "start_ac";
+        public static final String EXIT_BUTTON_ACTION_COMMAND = "exit_ac";
+
+
+        @Override
+        public void actionPerformed(ActionEvent event) {
+            String actionCommand = event.getActionCommand();
+            if (actionCommand.equals(START_BUTTON_ACTION_COMMAND)) {
+               // mainView.setScreen(MainView.Screen.RUN_GAME_SCREEN);
+                // MainView.Screen.RUN_GAME_SCREEN
+
+                System.out.println("Start button is pressed");
+
+
+            } else if (actionCommand.equals(EXIT_BUTTON_ACTION_COMMAND)) {
+                //mainView.setScreen(MainView.Screen.END_MENU_SCREEN);
+                System.out.println(" exit is pressed");
+            }
+
+        }   }
