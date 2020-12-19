@@ -27,7 +27,7 @@ public abstract class Tank extends Entity {
 
     protected void shoot(GameState gameState){
         Shell shell = new Shell(getShellX(),getShellY(),getAngle());
-        gameState.addShellEntity(shell);
+        gameState.addShell(shell);
         }
 
     // TODO: The methods below are provided so you don't have to do the math for movement. However, note that they are
@@ -71,14 +71,17 @@ public abstract class Tank extends Entity {
 
     }
     @Override
-    public void setX(double v) {
+    public void setX(double x) {
+        this.x = x;
 
     }
 
     @Override
-    public void setY(double v) {
+    public void setY(double y) {
+        this.y =y;
 
     }
+
 
     @Override
     public double getXBound() {
@@ -89,6 +92,8 @@ public abstract class Tank extends Entity {
     public double getYBound() {
         return getY()+55.0;
     }
+
+
 
 
 }

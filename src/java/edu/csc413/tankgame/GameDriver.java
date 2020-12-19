@@ -6,6 +6,8 @@ import edu.csc413.tankgame.view.RunGameView;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 
 /**
@@ -20,21 +22,19 @@ public class GameDriver {
     private final MainView mainView;
     private final RunGameView runGameView;
     private final GameState gameState;
-    private final PrintListener printlistener;
-
 
 
     public GameDriver() {
-        mainView = new MainView();
+        PrintListener printlistener = new PrintListener();
+        EscapeListener escapelistener = new EscapeListener();
+        mainView = new MainView(printlistener, escapelistener);
         runGameView = mainView.getRunGameView();
         gameState = new GameState();
-        printlistener = new PrintListener();
+
 
     }
 
 
-    public static boolean startPressed;
-    public static boolean exitPressed;
 
     public void start() {
         // TODO: Implement.
@@ -42,11 +42,8 @@ public class GameDriver {
         // u should have figured out how to transit the screen when the button is pressed
 
         mainView.setScreen(MainView.Screen.START_MENU_SCREEN);
-
-      if (startPressed = true) {
-           mainView.setScreen(MainView.Screen.RUN_GAME_SCREEN);
           runGame();
-        }
+
   }
 
     private void runGame() {
@@ -75,15 +72,15 @@ public class GameDriver {
         WallImageInfo.readWalls();
         for(int i = 0; i <WallImageInfo.readWalls().size();i++ )
         {
-            String wallz = "Wall-"+i;
+            String wall = "Wall-" + i;
             Walls walls = new Walls(
-                     wallz,
+                      wall,
                       WallImageInfo.readWalls().get(i).getX(),
                       WallImageInfo.readWalls().get(i).getY(),
                       0);
             gameState.addEntity(walls);
             runGameView.addDrawableEntity(
-                     wallz,
+                     wall,
                      WallImageInfo.readWalls().get(i).getImageFile(),
                      walls.getX(),
                      walls.getY(),
@@ -91,7 +88,6 @@ public class GameDriver {
             );
 
         }
-
 
         // adding to the list
         gameState.addEntity(playerTank);
@@ -140,7 +136,6 @@ public class GameDriver {
 
         for (Entity entity : gameState.getEntities()) {
             entity.move(gameState);
-       //     entity.add(shellEntities);
             entity.boundChecking(gameState);
         }
         //1.Ask all tanks,shells, etc. to move
@@ -155,40 +150,40 @@ public class GameDriver {
         //Ask gameState -- any shells to remove?
         // if so, cal removeDrawableEntity
 
-        for (Entity ShellEntities : gameState.getShellEntities()) {
+        for (Entity ShellEntities : gameState.getShell()) {
             runGameView.addDrawableEntity(
                     ShellEntities.getId(),
                     RunGameView.SHELL_IMAGE_FILE,
                     ShellEntities.getX(),
                     ShellEntities.getY(),
                     ShellEntities.getAngle());
-            if (!gameState.getShellEntities().contains(ShellEntities)) {
-                runGameView.removeDrawableEntity(ShellEntities.getId());
-            }
-            ShellEntities.move(gameState);
-
+            gameState.addEntity(ShellEntities);
         }
+        gameState.getShell().clear();
 
+        for(Entity bullet : gameState.GetShellToRemove()){
+            gameState.removeEntity(bullet);
+            runGameView.removeDrawableEntity(bullet.getId());
+        }
+            gameState.GetShellToRemove().clear();
 
         for (Entity entity : gameState.getEntities()) {
             runGameView.setDrawableEntityLocationAndAngle(entity.getId(), entity.getX(), entity.getY(), entity.getAngle());
         }
 
-        for(int i = 0; i < gameState.getEntities().size() - 1; i++){
-            for(int j=i+1; j<gameState.getEntities().size()-1;j++) {
 
+        for(Entity entity1: gameState.getEntities() ){
+                 for(Entity entity2:gameState.getEntities()){
+                     if(entitiesOverlap(entity1, entity2)){
+                       if  (!entity1.getId().equals(entity2.getId())) {
+                             handleCollision(entity1, entity2);
+                 }
 
-                Entity entity1 = gameState.getEntities().get(i);
-                Entity entity2 = gameState.getEntities().get(j);
-
-                if(entitiesOverlap(entity1, entity2)){
-                    handleCollision(entity1,entity2);
+                    }
                 }
             }
-        }
 
         return true;
-
     }
 
 
@@ -197,15 +192,7 @@ public class GameDriver {
         gameDriver.start();
     }
 
-    public static void pressedStart() {
-        startPressed = true;
 
-    }
-
-    public static void pressedExit() {
-        exitPressed = true;
-
-    }
 
 
     public class PrintListener implements ActionListener {
@@ -217,28 +204,38 @@ public class GameDriver {
         public void actionPerformed(ActionEvent event) {
             String actionCommand = event.getActionCommand();
             if (actionCommand.equals(START_BUTTON_ACTION_COMMAND)) {
-               pressedStart();
-                System.out.println("Start button is pressed");
                 mainView.setScreen(MainView.Screen.RUN_GAME_SCREEN);
+                System.out.println("Start button is pressed");
 
 
             } else if (actionCommand.equals(EXIT_BUTTON_ACTION_COMMAND)) {
-                if(actionCommand.equals(EXIT_BUTTON_ACTION_COMMAND)){
-                  mainView.setScreen(MainView.Screen.END_MENU_SCREEN);
-                  pressedExit();
-                System.out.println(" exit is pressed");}
+                mainView.setScreen(MainView.Screen.END_MENU_SCREEN);
+                System.out.println(" exit is pressed");
+
             }
 
         }
     }
 
-//    for(int i = 0; i < gameState.getEntities().size()- 1; i++){
-//        for(int j=i+1; j<gameState.getEntites().size()-1;j++){
-//
-//        }
-//        Entity entity1 = gameState.getEntities().get(i);
-//
-//    }
+    public class EscapeListener implements KeyListener {
+        @Override
+        public void keyTyped(KeyEvent e){
+
+        }
+
+        @Override
+        public void keyPressed(KeyEvent event){
+            int key = event.getKeyCode();
+            if(key == KeyEvent.VK_ESCAPE){
+                mainView.setScreen(MainView.Screen.END_MENU_SCREEN);
+            }
+
+        }
+        @Override
+        public void keyReleased(KeyEvent e){
+
+        }
+    }
 
     private boolean entitiesOverlap(Entity entity1, Entity entity2) {
         return entity1.getX() < entity2.getXBound()
@@ -248,94 +245,85 @@ public class GameDriver {
     }
 
 
-    private void handleCollision(Entity entity1, Entity entity2){
-        if(entity1 instanceof Tank && entity2 instanceof Tank){
-            double x1Distance = entity1.getXBound()-entity2.getX();
-            double x2Distance = entity2.getXBound()-entity1.getX();
-            double y1Distance = entity1.getYBound()-entity2.getY();
-            double y2Distance = entity2.getYBound()-entity1.getY();
+    private void handleCollision(Entity entity1, Entity entity2) {
+        if (entity1 instanceof Tank && entity2 instanceof Tank) {
+            double x1Distance = entity1.getXBound() - entity2.getX();
+            double x2Distance = entity2.getXBound() - entity1.getX();
+            double y1Distance = entity1.getYBound() - entity2.getY();
+            double y2Distance = entity2.getYBound() - entity1.getY();
 
             double halfDistance;
-            if(x1Distance < x2Distance && x1Distance < y1Distance && x1Distance< y2Distance){
-                halfDistance = x1Distance/2;
+
+            if (x1Distance < x2Distance && x1Distance < y1Distance && x1Distance < y2Distance) {
+                halfDistance = x1Distance / 2;
                 entity1.setX(entity1.getX() - halfDistance);
                 entity2.setX(entity2.getX() + halfDistance);
-            }
 
-            else if(x2Distance < x1Distance && x2Distance < y1Distance && x2Distance< y2Distance) {
-                halfDistance = x2Distance/2;
+            } else if (x2Distance < x1Distance && x2Distance < y1Distance && x2Distance < y2Distance) {
+                halfDistance = x2Distance / 2;
                 entity1.setX(entity1.getX() + halfDistance);
-                entity2.setX(entity1.getX() - halfDistance);
-            }
-
-            else if(x1Distance < x2Distance && x1Distance < y1Distance && x1Distance< y2Distance) {
-                halfDistance = x1Distance/2;
-                entity1.setY(entity1.getX() - halfDistance);
-                entity2.setY(entity1.getX() + halfDistance);
-            }
-
-            else if (x2Distance < x1Distance && x2Distance < y1Distance && x2Distance< y2Distance){
-                  halfDistance = x2Distance/2;
-                  entity1.setY(entity1.getX() + halfDistance);
-                  entity2.setY(entity1.getX() - halfDistance);
+                entity2.setX(entity2.getX() - halfDistance);
+            } else if (y1Distance < x2Distance && y1Distance < x1Distance && y1Distance < y2Distance) {
+                halfDistance = y1Distance / 2;
+                entity1.setY(entity1.getY() - halfDistance);
+                entity2.setY(entity2.getY() + halfDistance);
+            } else if (y2Distance < y1Distance && y2Distance < x1Distance && y2Distance < x2Distance) {
+                halfDistance = y2Distance / 2;
+                entity1.setY(entity1.getY() + halfDistance);
+                entity2.setY(entity2.getY() - halfDistance);
             }
 
 
-        }else if (entity1 instanceof Tank && entity2 instanceof Walls) {
-            // Handle tank shell collision
-            double x1Distance = entity1.getXBound()-entity2.getX();
-            double x2Distance = entity2.getXBound()-entity1.getX();
-            double y1Distance = entity1.getYBound()-entity2.getY();
-            double y2Distance = entity2.getYBound()-entity1.getY();
+        } else if (entity1 instanceof Tank && entity2 instanceof Walls) {
+//            // Handle tank shell collision
 
-            double distance;
-
-            if(x1Distance < x2Distance && x1Distance < y1Distance && x1Distance< y2Distance){
-                distance = x1Distance;
-                entity1.setX(entity1.getX() - distance);}
-
-            else if(x2Distance < x1Distance && x2Distance < y1Distance && x2Distance< y2Distance){
-                distance = x2Distance;
-                entity2.setX(entity1.getX() - distance);}
-
-            else if(x1Distance < x2Distance && x1Distance < y1Distance && x1Distance< y2Distance){
-                distance = x1Distance;
-                entity1.setY(entity1.getX() - distance);}
-
-            else if (x2Distance < x1Distance && x2Distance < y1Distance && x2Distance< y2Distance){
-                distance = x2Distance;
-                entity2.setY(entity1.getX() - distance);}
-
+            double x1Distance = entity1.getXBound() - entity2.getX();
+            double x2Distance = entity2.getXBound() - entity1.getX();
+            double y1Distance = entity1.getYBound() - entity2.getY();
+            double y2Distance = entity2.getYBound() - entity1.getY();
+            double Distance;
+            if (x1Distance < x2Distance && x1Distance < y1Distance && x1Distance < y2Distance) {
+                Distance = x1Distance;
+                entity1.setX(entity1.getX() - Distance);
+            } else if (x2Distance < x1Distance && x2Distance < y1Distance && x2Distance < y2Distance) {
+                Distance = x2Distance;
+                entity1.setX(entity1.getX() + Distance);
+            } else if (y1Distance < x2Distance && y1Distance < x1Distance && y1Distance < y2Distance) {
+                Distance = y1Distance;
+                entity1.setY(entity1.getY() - Distance);
+            } else if (y2Distance < y1Distance && y2Distance < x1Distance && y2Distance < x2Distance) {
+                Distance = y2Distance;
+                entity1.setY(entity1.getY() + Distance);
+            }
 
 
         } else if (entity1 instanceof Shell && entity2 instanceof Tank) {
             // Same as above]
-            double x1Distance = entity1.getXBound()-entity2.getX();
-            double x2Distance = entity2.getXBound()-entity1.getX();
-            double y1Distance = entity1.getYBound()-entity2.getY();
-            double y2Distance = entity2.getYBound()-entity1.getY();
+            gameState.AddShellToRemove(entity1);
+            runGameView.addAnimation((RunGameView.SHELL_EXPLOSION_ANIMATION),
+                    RunGameView.SHELL_EXPLOSION_FRAME_DELAY,
+                    entity1.getX(), entity2.getY());
 
-            double distance;
 
-            if(x1Distance < x2Distance && x1Distance < y1Distance && x1Distance< y2Distance){
-                distance = x1Distance;
-                entity1.setX(entity1.getX() - distance);}
 
-            else if(x2Distance < x1Distance && x2Distance < y1Distance && x2Distance< y2Distance){
-                distance = x2Distance;
-                entity2.setX(entity1.getX() - distance);}
+        } else if (entity1 instanceof Shell && entity2 instanceof Walls) {
+            gameState.AddShellToRemove(entity1);
+            gameState.AddShellToRemove(entity2);
+            runGameView.addAnimation((RunGameView.SHELL_EXPLOSION_ANIMATION),
+                    RunGameView.SHELL_EXPLOSION_FRAME_DELAY,
+                    entity1.getX(),
+                    entity2.getY());
 
-            else if(x1Distance < x2Distance && x1Distance < y1Distance && x1Distance< y2Distance){
-                distance = x1Distance;
-                entity1.setY(entity1.getX() - distance);}
 
-            else if (x2Distance < x1Distance && x2Distance < y1Distance && x2Distance< y2Distance){
-                distance = x2Distance;
-                entity2.setY(entity1.getX() - distance);}
+
+        } else if(entity1 instanceof Shell || entity2 instanceof Shell){
+            gameState.AddShellToRemove(entity1);
+            gameState.AddShellToRemove(entity2);
+            runGameView.addAnimation((RunGameView.SHELL_EXPLOSION_ANIMATION),
+                    RunGameView.SHELL_EXPLOSION_FRAME_DELAY,
+                    entity1.getX(),
+                    entity2.getY());
 
         }
     }
-
 }
-
-

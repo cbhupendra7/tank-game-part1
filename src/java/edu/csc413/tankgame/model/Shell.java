@@ -28,30 +28,35 @@ public class Shell extends Entity {
 
     @Override
     public void boundChecking(GameState gameState) {
-        if (getX() < GameState.SHELL_X_LOWER_BOUND) {
-            x = GameState.SHELL_X_LOWER_BOUND;
-        }
-        if (getX() > GameState.SHELL_X_UPPER_BOUND) {
-            x = GameState.SHELL_X_UPPER_BOUND;
-        }
-        if (getY() < GameState.SHELL_Y_LOWER_BOUND) {
-            y = GameState.SHELL_Y_LOWER_BOUND;
-        }
-        if (getY() > GameState.SHELL_Y_UPPER_BOUND) {
-            y = GameState.SHELL_Y_UPPER_BOUND;
+        for (Entity bringShell : gameState.getShell()) {
 
+            if (getX() < GameState.SHELL_X_LOWER_BOUND) {
+                gameState.removeShell(bringShell);
+            }
+            if (getX() < GameState.SHELL_X_LOWER_BOUND) {
+                gameState.removeShell(bringShell);
+            }
+
+            if (getY() < GameState.SHELL_Y_LOWER_BOUND) {
+                gameState.removeShell(bringShell);
+            }
+            if (getY() > GameState.SHELL_Y_UPPER_BOUND) {
+                gameState.removeShell(bringShell);
+
+            }
         }
+    }
+    @Override
+    public void setX(double x) {
+        this.x = x;
+
     }
 
     @Override
-    public void setX(double v) {
-
+    public void setY(double y) {
+        this.y = y;
     }
 
-    @Override
-    public void setY(double v) {
-
-    }
 
     private static String getUniqueId () {
             return SHELL_ID_PREFIX + uniqueId++;

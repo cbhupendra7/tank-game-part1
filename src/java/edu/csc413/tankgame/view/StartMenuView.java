@@ -1,5 +1,6 @@
 package edu.csc413.tankgame.view;
 
+
 import edu.csc413.tankgame.GameDriver;
 
 import javax.imageio.ImageIO;
@@ -30,9 +31,6 @@ public class StartMenuView extends JPanel {
     public static final String START_BUTTON_ACTION_COMMAND = "start_ac";
     public static final String EXIT_BUTTON_ACTION_COMMAND = "exit_ac";
 
-   // GameDriver.printlistener printlisteners = printListener();
-
-
 
     private final BufferedImage menuBackground;
 
@@ -40,7 +38,7 @@ public class StartMenuView extends JPanel {
     // You'll need to provide a way for GameDriver to respond to button presses in this view. Note that below, we add
     // null ActionListeners to the buttons, which don't do anything. How can we change that to be an ActionListener that
     // directs us back to the code in GameDriver?
-    public StartMenuView(String startButtonText) {
+    public StartMenuView(String startButtonText, GameDriver.PrintListener printlistener) {
         URL imageUrl = getClass().getClassLoader().getResource(START_MENU_IMAGE_FILE);
         if (imageUrl == null) {
             throw new RuntimeException("Unable to create an image URL from: " + START_MENU_IMAGE_FILE);
@@ -54,8 +52,11 @@ public class StartMenuView extends JPanel {
         setBackground(Color.BLACK);
         setLayout(null);
 
-        addButton(startButtonText, START_BUTTON_BOUNDS, START_BUTTON_ACTION_COMMAND, null);
-        addButton("Exit", EXIT_BUTTON_BOUNDS, EXIT_BUTTON_ACTION_COMMAND, null);
+
+
+
+        addButton(startButtonText, START_BUTTON_BOUNDS, START_BUTTON_ACTION_COMMAND, printlistener);
+        addButton("Exit", EXIT_BUTTON_BOUNDS, EXIT_BUTTON_ACTION_COMMAND, printlistener);
     }
 
     private void addButton(

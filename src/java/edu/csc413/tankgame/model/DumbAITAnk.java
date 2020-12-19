@@ -6,17 +6,21 @@ public class DumbAITAnk extends Tank {
 
     }
 
+    private int coolDown = 200;
     @Override
     public void move(GameState gameState) {
-        moveForward();
+       // moveForward();
         turnRight();
 
-      /// int coolDown =100;
-       // if (GameState.shoot) {
-        //    if (coolDown > 200) {
-        //shoot.gameState;
-      //  shoot(gameState);
+        coolDown++;
+        if (coolDown > 205) {
+            shoot(gameState);
+
+            coolDown = 0;
+        }
+    }
 
 
-        };
+
+
 }

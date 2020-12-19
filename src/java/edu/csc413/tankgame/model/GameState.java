@@ -1,6 +1,5 @@
 package edu.csc413.tankgame.model;
 
-import edu.csc413.tankgame.GameDriver;
 import edu.csc413.tankgame.view.RunGameView;
 
 import java.util.ArrayList;
@@ -39,6 +38,7 @@ public class GameState {
     public static boolean leftPressed;
     public static boolean rightPressed;
     public static boolean shootPressed;
+    public static boolean escPressed;
 
     private final List<Entity> entities = new ArrayList<>();
 
@@ -55,19 +55,37 @@ public class GameState {
     }
 
 
-    private final List<Entity> shellEntities = new ArrayList<>();
+    private final List<Entity> shell = new ArrayList<>();
 
-    public void addShellEntity(Entity shell) {
-        shellEntities.add(shell);
+    public void addShell(Entity shells) {
+        shell.add(shells);
     }
 
-    public List<Entity> getShellEntities() {
-        return shellEntities;
+    public List<Entity> getShell() {
+        return shell;
     }
 
-    public void removeShellEntity(Entity shell) {
+    public void removeShell(Entity shell) {
         entities.remove(shell);
     }
+
+
+
+    private final List<Entity>  shellToRemove = new ArrayList<>();
+
+    public void AddShellToRemove(Entity shell) {
+        shellToRemove.add(shell);
+    }
+
+    public List<Entity> GetShellToRemove() {
+        return shell;
+    }
+
+    public void RemoveShellToRemove(Entity shell) {
+        entities.remove(shell);
+    }
+
+
 
 
     public static void setupPressed() {
@@ -90,6 +108,8 @@ public class GameState {
         shootPressed = true;
     }
 
+    public static void setEscPressed() {escPressed = true;}
+
     public static void releaseupPressed() {
         upPressed = false;
     }
@@ -108,6 +128,9 @@ public class GameState {
 
     public static void releaseshootPressed() {
         shootPressed = false;
+    }
+    public static void releaseEscPressed(){
+        escPressed = false;
     }
 
 

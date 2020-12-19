@@ -5,35 +5,47 @@ public class Walls extends Entity {
     super(id, x, y, angle);
 }
 
+
+    public double getX() {
+        return x;
+    }
+
+    public double getY() {
+        return y;
+    }
+
     @Override
     public double getXBound() {
-        return 0;
+        return getX()+32.0;
     }
 
     @Override
     public double getYBound() {
-        return 0;
+        return getY()+32.0;
     }
 
     @Override
     public void move(GameState gameState){
 
-
     }
 
     @Override
     public void boundChecking(GameState gameState) {
+    }
+
+    @Override
+    public void setX(double x) {
 
     }
 
     @Override
-    public void setX(double v) {
+    public void setY(double y) {
 
     }
 
-    @Override
-    public void setY(double v) {
-
-    }
+//    @Override
+//    public void Health(GameState gameState) {
+//
+//    }
 
 }

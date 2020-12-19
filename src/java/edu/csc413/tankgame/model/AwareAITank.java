@@ -1,15 +1,12 @@
 package edu.csc413.tankgame.model;
 
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.logging.Handler;
 
 public class AwareAITank extends Tank {
     public AwareAITank(String id, double x, double y, double angle) {
         super(id, x, y, angle);
     }
 
-    private int coolDown = 10;
+    private int coolDown = 200;
 
     @Override
   public void move(GameState gameState){
@@ -31,21 +28,17 @@ public class AwareAITank extends Tank {
         if(distance > 400.0){
             moveForward();
         }
-        else if(distance <200.0){
+      else if(distance <200.0){
             moveBackward();
         }
 
-
-
-
-
-
         coolDown++;
-        if(coolDown > 10 ){
+        if(coolDown > 205 ) {
             shoot(gameState);
 
-        };
-        coolDown = 0;
+            coolDown = 0;
+        }
     }
+
 
 }
